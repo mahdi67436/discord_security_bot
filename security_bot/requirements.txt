@@ -1,0 +1,46 @@
+# Military-Grade Discord Security Bot
+# Python 3.11+ Required
+
+# Core Discord Library
+discord.py==2.3.2
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Database Support
+# SQLite built-in, but including psycopg2 for PostgreSQL support
+psycopg2-binary==2.9.9
+
+# Async Support
+aiohttp==3.9.0
+asyncio-contextmanager==1.0.0
+
+# Text Processing & Security
+regex==2023.11.8
+nltk==3.8.1
+unicodedata2==15.1.0
+
+# Logging & Monitoring
+python-json-logger==2.0.7
+
+# Configuration Management
+PyYAML==6.0.1
+
+# Optional: Advanced Features
+# APScheduler for advanced task scheduling
+apscheduler==3.10.4
+
+# Optional: Database Migrations (if expanding DB)
+alembic==1.12.1
+
+# Development/Testing
+black==23.11.0
+flake8==6.1.0
+pytest==7.4.3
+pytest-asyncio==0.21.1
+
+# Production Server (Optional)
+gunicorn==21.2.0
+
+# Security & Cryptography
+cryptography==41.0.7

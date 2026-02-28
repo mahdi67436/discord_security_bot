@@ -1,0 +1,49 @@
+# Railway.app Configuration
+# Save as railway.json or railway.toml
+
+# Option 1: Using railway.toml
+[tool.railway]
+pythonVersion = "3.11"
+
+# Environment variables
+[tool.railway.up]
+startCommand = "python main.py"
+
+# Deployment
+[tool.railway.build]
+builder = "buildpacks"
+
+# Steps to deploy on Railway:
+# 1. Install Railway CLI: npm i -g @railway/cli
+# 2. Login: railway login
+# 3. Link project: railway link
+# 4. Set environment variables:
+#    railway variables set DISCORD_TOKEN=<your-token>
+#    railway variables set ENVIRONMENT=production
+# 5. Deploy: railway up
+# 6. View logs: railway logs
+# 7. View status: railway status
+
+# After initial setup:
+# Push to GitHub and Railway will auto-deploy on commits
+# https://docs.railway.app/
+
+# Add to GitHub Actions for CD:
+# .github/workflows/deploy.yml
+name: Deploy to Railway
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: railway-app/setup-cli@v1
+        with:
+          token: ${{ secrets.RAILWAY_TOKEN }}
+      - run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

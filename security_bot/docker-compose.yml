@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # Main Security Bot
+  security-bot:
+    build: .
+    container_name: discord-security-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./backups:/app/backups
+      - ./security_bot.db:/app/security_bot.db
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TZ=UTC
+    networks:
+      - discord-network
+    depends_on:
+      - postgres
+
+  # Optional: PostgreSQL Database (Production)
+  postgres:
+    image: postgres:16-alpine
+    container_name: discord-security-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: security_bot
+      POSTGRES_USER: ${DB_USER:-security_bot}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+      PGTZ: UTC
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - discord-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-security_bot}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Optional: pgAdmin (Database Management UI)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: discord-security-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - discord-network
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
+
+networks:
+  discord-network:
+    driver: bridge
+
+# Usage:
+# docker-compose up -d          # Start all services
+# docker-compose logs -f        # View logs
+# docker-compose down           # Stop all services
+# docker-compose ps             # List running services

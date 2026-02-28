@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: discord-security-bot
+    runtime: python
+    pythonVersion: 3.11
+    plan: free
+    startCommand: python main.py
+    
+    # Environment variables (set in Render dashboard)
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DATABASE_URL
+        sync: false
+
+# Deployment settings
+deployment:
+  autoReDeploy: true
+  fromRepo: <your-github-repo-url>
+  
+# See: https://docs.render.com/deploy-python-build-service
+
+# Steps to deploy:
+# 1. Push this file to root of GitHub repo
+# 2. Create account on Render.com
+# 3. Connect GitHub account
+# 4. Create "Web Service" and select this repo
+# 5. Add environment variable DISCORD_TOKEN
+# 6. Deploy!
