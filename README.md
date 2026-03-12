@@ -125,7 +125,7 @@ Use the generated OAuth2 URL from Developer Portal to invite bot to your server.
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/mahdi67436/discord_security_bot.git
 cd security_bot
 
 # Create virtual environment
